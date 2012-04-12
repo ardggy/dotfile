@@ -247,33 +247,6 @@
 (setq load-path (cons "/usr/share/emacs/site-lisp/" load-path))
 (autoload 'navi2ch "navi2ch" "Navigator for 2ch for Emacs" t)
 
-;; hatena-mode
-(setq load-path (cons "~/site-lisp/hatena-mode/" load-path))
-(require 'hatena-mode)
-(setq hatena-usrid "Abeco")
-(setq hatena-passwd "V6(lisP?Q8")
-(setq hatena-plugin-directory "~/site-lisp/")
-
-;; hatena-option
-(setq hatena-directory (expand-file-name "~/Documents/blog/"))
-;; (setq hatena-proxy "http://foo.bar.net:8080/")  ;; use proxy
-
-;; macros
-(fset 'input-pre-nontation
-      (lambda (&optional arg)
-	"Keyboard macro."
-	(interactive "p:")
-	(kmacro-exec-ring-item (quote (">||||<" 0 "%d")) arg)))
-
-;; hatenahelper-mode
-(setq load-path (cons "~/site-lisp/hatenahelper-mode-0.1" load-path))
-(require 'hatenahelper-mode)
-(global-set-key "\C-xH" 'hatenahelper-mode)
-(add-hook 'hatena-mode-hook
- '(lambda ()
-    (hatenahelper-mode 1)
-    (yascrall-mode 1)))
-
 ;; bar config
 ;(tool-bar-mode nil)
 (menu-bar-mode nil)
