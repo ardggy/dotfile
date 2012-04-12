@@ -1,0 +1,52 @@
+##
+# .screenrc
+# since 2009-05-26
+
+# Command Key binding
+escape ^Tt
+
+# emacs like binding
+bind -c REGION 1 only
+bind -c REGION 2 split
+bind -c REGION 3 split -v
+bind -c REGION 0 remove
+bind -c REGION ^n focus next
+bind -c REGION ^p focus prev
+bind -c REGION < resize -v -2
+bind -c REGION > resize -v +2
+bind -c REGION + resize -h +2
+bind -c REGION - resize -h -2
+
+bind ^x command -c REGION
+
+# disable password
+bind x
+
+# display licence message
+startup_message off
+
+# set encoding
+defutf8 on
+defkanji utf-8
+encoding utf-8 utf-8
+defencoding utf-8
+
+bind ^e encoding eucJP
+bind ^u encoding UTF-8
+bind ^s encoding SJIS 
+
+# scrollback line
+defscrollback 20000
+
+# wait of display message on status line
+msgwait 10
+
+# enable scroll by mouse
+termcapinfo xterm* ti@:te@
+
+# visual bell
+vbell off
+
+# display status line
+hardstatus on
+hardstatus alwayslastline "[screen] %-w%{b rw}%n %t %h %{-}%+w %{b G}%H <%c>"
