@@ -6,6 +6,11 @@
 ;; require CL package
 (require 'cl)
 
+(require 'info)
+(add-to-list 'Info-directory-list "/usr/share/info")
+(add-to-list 'Info-directory-list "/usr/local/share/info")
+(auto-compression-mode t)
+
 ;; startup-message
 (setq-default inhibit-startup-message nil)
 
@@ -17,7 +22,14 @@
 (setq load-path (cons "~/site-lisp/" load-path))
 (setq load-path (cons "~/site-lisp/auto-install" load-path))
 
+(require 'anything-startup)
+
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
+
+;; Side-bar
+(require 'sr-speedbar)
+(setq-default sr-speedbar-right-side nil)
+(global-set-key (kbd "C-c w") #'sr-speedbar-toggle)
 
 ;; insert header template
 (require 'autoinsert)
@@ -50,8 +62,21 @@
 
 (add-hook 'find-file-not-found-hooks 'auto-insert)
 
+
+;;; installation at shell
+;; $ git clone https://github.com/capitaomorte/yasnippet.git
+(setq load-path (cons "~/site-lisp/yasnippet" load-path))
+(require 'yasnippet)
+
+;; (auto-install-from-emacswiki "yasnippet-config.el")
+(require 'yasnippet-config)
+
 ;; git
 (require 'git-dwim)
+
+;; unit-test
+(require 'el-expectations)
+(require 'el-mock)
 
 ;; indent with space
 (setq-default indent-tabs-mode nil)
@@ -228,6 +253,13 @@
 (setq auto-install-directory "~/site-lisp/auto-install/")
 (auto-install-update-emacswiki-package-name t)
 
+;; (auto-install-from-emacswiki "install-elisp.el")
+(require 'install-elisp)
+
+;; hide block and show block
+;; (install-elisp "http://www.dur.ac.uk/p.j.heslin/Software/Emacs/Download/fold-dwim.el")
+(require 'hideshow)
+
 ;; sql-mode
 (add-hook 'sql-mode-hook
           #'(lambda ()
@@ -318,7 +350,15 @@
           (lambda ()
             (setq haskell-check-command "~/.cabal/bin/hlint")))
 
+;; emacs lisp
+(require 'eldoc)
+(require 'eldoc-extension)
 
+(mapc (lambda (mode)
+        (add-hook mode #'turn-on-eldoc-mode))
+      '(emacs-lisp-mode-hook
+        lisp-interaction-mode-hook
+        ielm-mode-hook))
 
 ;; use Common Lisp
 (global-set-key "\C-c\C-z" 'run-lisp)
@@ -345,6 +385,9 @@
                slime-autodoc))
 
 (slime-autodoc-mode)
+
+
+(require 'parenthesis)
 
 ;; hook to lisp mode
 (add-hook 'lisp-mode
@@ -415,11 +458,24 @@
 ;; (setq lisp-indent-function 'scheme-smart-indent-function)
 
 
-; use gauche
+;; use gauche
 (setq scheme-program-name "/usr/local/bin/gosh")
+
 (add-hook 'scheme-mode-hook
           '(lambda ()
              (setq indent-tabs-mode nil)))
+
+(defvar anything-c-source-info-gauche-refj
+  ;; '((info-index . "~/../gauche/share/info/gauche-refj.info")))
+  '((info-index . "gauche-refj.info")))
+
+(defun anything-info-ja-at-point ()
+  "Preconfigured `anything' for searching info at point."
+    (interactive)
+      (anything '(anything-c-source-info-gauche-refj)
+                  (thing-at-point 'symbol) nil nil nil "*anything info*"))
+
+(define-key global-map (kbd "C-M-;") #'anything-info-ja-at-point)
 
 ;; javascript-mode
 (autoload 'js2-mode "Javascript-mode" "Yet Another JavaScript Mode" t)
@@ -446,12 +502,17 @@
 (add-to-list 'auto-mode-alist '("\\.st$" . smalltalk-mode))
 
 ;; c-indent
+
+; (auto-install-from-emacswiki "c-eldoc.el")
+(require 'c-eldoc)
+
 (add-hook 'c-mode-hook
           '(lambda ()
              (c-set-style "cc-mode")
              (modify-syntax-entry ?_ "w")
              (setq tab-width 4)
-             (yascroll-mode 1)))
+             (turn-on-eldoc-mode)
+             ))
 
 ;; changelog memo
 (defun memo ()
