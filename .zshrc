@@ -8,9 +8,9 @@ PATH=/usr/local/bin:$PATH
 
 export TERM=xterm
 export NODE_PATH=/usr/local/lib/node_modules
-export EDITOR=emacsclient
-export VISUAL=emacsclient
-export GIT_PAGER=emacsclient
+export EDITOR='emacsclient -nct'
+export VISUAL='emacsclient -nct'
+export GIT_PAGER='emacsclient -nct'
 
 # byobu - tmux wrapper
 export BYOBU_BACKEND=tmux
