@@ -74,10 +74,14 @@
 
 ;; $ git clone https://github.com/git/git.git
 ;; $ cp git/contrib/emacs/*.el ~/my-site-lisp/
-(require 'git)
-(require 'git-blame)
-
+;; (require 'git)
+;; (require 'git-blame)
 (require 'git-dwim)
+
+;; $ sudo brew install magit
+(require 'magit)
+
+(global-set-key (kbd "C-x v s") #'magit-status)
 
 ;; unit-test
 ;; (auto-install-batch "el-expectations.el")
@@ -376,7 +380,9 @@
 
 ;;; key-binding
 (define-key global-map "\C-h" 'delete-backward-char)
+(define-key global-map (kbd "C-c ?") #'describe-bindings)
 (define-key global-map "\M-?" 'help-command)
+
 ;; (define-key global-map "\C-z" 'undo)	; instead of "\C-xu" or "C-/"
 (define-key global-map "\M-/" 'dabbrev-expand)
 ;; (define-key global-map "\C-ct" 'transpose-chars)

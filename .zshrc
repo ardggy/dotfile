@@ -42,7 +42,6 @@ alias lla="ll -a"
 alias ldir="ls | grep '/$'"
 alias where="command -v"
 alias j="jobs -l"
-
 alias du="du -h"
 alias df="df -h"
 
