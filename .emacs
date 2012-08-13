@@ -62,7 +62,6 @@
 
 (add-hook 'find-file-not-found-hooks 'auto-insert)
 
-
 ;;; installation at shell
 ;; $ git clone https://github.com/capitaomorte/yasnippet.git
 (setq load-path (cons "~/site-lisp/yasnippet" load-path))
@@ -71,10 +70,17 @@
 ;; (auto-install-from-emacswiki "yasnippet-config.el")
 (require 'yasnippet-config)
 
-;; git
+;;; git
+
+;; $ git clone https://github.com/git/git.git
+;; $ cp git/contrib/emacs/*.el ~/my-site-lisp/
+(require 'git)
+(require 'git-blame)
+
 (require 'git-dwim)
 
 ;; unit-test
+;; (auto-install-batch "el-expectations.el")
 (require 'el-expectations)
 (require 'el-mock)
 
