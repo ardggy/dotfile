@@ -55,7 +55,7 @@ alias arc="(cd $HOME/opt/arc && /opt/local/bin/mzscheme -f as.scm)"
 alias perl="perl -w"         # warning option (also gcc)
 alias gcc="gcc -Wall -O0"	# and optimize (Level zero)
 
-alias emacs="emacsclient -c -nw"
+alias emacs="emacsclient -nct"
 alias par="parallel"
 alias seq="gseq"  # for Mac OS X
 
