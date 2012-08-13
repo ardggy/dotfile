@@ -3,11 +3,18 @@
 #
 
 # environment
-PATH=${PATH}${PATH:+:}$HOME/bin:${HOME}/.cabal/bin/
-PATH=/usr/local/bin:${PATH}
+PATH=${(j/:/)${(s/:/)PATH}%/}${PATH:+:}$HOME/bin
+PATH=/usr/local/bin:$PATH
 
 export TERM=xterm
 export NODE_PATH=/usr/local/lib/node_modules
+export EDITOR=emacsclient
+export VISUAL=emacsclient
+export GIT_PAGER=emacsclient
+
+# byobu - tmux wrapper
+export BYOBU_BACKEND=tmux
+export BYOBU_CONFIG_DIR=${HOME}/.byobu
 
 REPORTTIME=5
 TIMEFMT="%J: %U+%s, %P CPU, %*E total"
@@ -24,10 +31,7 @@ autoload run-help
 
 # autoload function
 autoload zed
-
-# zstyle
-zstyle ':completion:*' format '%BCompleting %d%b'
-zstyle ':completion:*' group-name ';'
+autoload -Uz zmv
 
 # zsh modules
 # zmodload zsh/sched
@@ -51,9 +55,9 @@ alias arc="(cd $HOME/opt/arc && /opt/local/bin/mzscheme -f as.scm)"
 alias perl="perl -w"         # warning option (also gcc)
 alias gcc="gcc -Wall -O0"	# and optimize (Level zero)
 
-alias wget="/opt/local/bin/wget -c"
-
-alias emacs="emacs-23.3 -nw"
+alias emacs="emacsclient -c -nw"
+alias par="parallel"
+alias seq="gseq"  # for Mac OS X
 
 # keymap
 #xmodmap ~/.xmodmap
@@ -63,7 +67,30 @@ alias emacs="emacs-23.3 -nw"
 autoload -U colors; colors
 
 # predict
-autoload predict-on; predict-on
+autoload predict-on
+autoload predict-off
+
+# completion
+autoload -U compinit && compinit
+
+# zstyle
+zstyle ':completion:*' verbose yes
+zstyle ':completion:*:descriptions' format '%B%d%b'
+zstyle ':completion:*:messages' format '%d'
+zstyle ':completion:*:warnings' format 'No matcheds for: %d'
+zstyle ':completion:*' group-name ''
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+zstyle ':completion:*' format '%BCompleting %d%b'
+zstyle ':completion:*' group-name ';'
+
+# vcs infomation
+autoload -Uz vcs_info
+
+# zstyle 'vcs_info:*' actionformats "String"
+# zstyle 'vcs_info:*' formats 'String'
+zstyle 'vcs_info:*' disable ALL
+zstyle 'vcs_info:*' enable darks rcs git svn
+
 
 # language
 export LANG=ja_JP.UTF-8
@@ -76,12 +103,21 @@ SPROMPT='is %r correct? [n,y,a,e]: '
 
 # key-bind
 bindkey -e			# emacs-like key-binding
+zstyle ':completion:*:default' menu select=1 # select with emacs' keybind
+
 #bindkey -v			# vi-like key-binding
+
+# smart insert
+autoload smart-insert-last-word
+zle -N insert-last-word smart-insert-last-word
+zstyle ':insert-last-word' match '*([^[:space:]][[:alpha:]/\\]|[[:alpha:]/\\][^[:space:]])*'
+bindkey '^]' insert-last-word
 
 # history option
 HISTFILE=~/.zsh_history
 HISTSIZE=100000000
 SAVEHIST=100000000
+
 setopt hist_ignore_dups		# ignore duplication command history list
 setopt share_history		# share command history data
 setopt hist_ignore_space
@@ -121,6 +157,7 @@ bindkey "^X^p"	predict-off
 local COMMAND=""
 local COMMAND_TIME=""
 function precmd () {
+    vcs_info
     if [ "$COMMAND_TIME" -ne "0" ] ; then
         local d=`date +%s`
         d=`expr $d - $COMMAND_TIME`
@@ -155,3 +192,4 @@ source ~/.zsh/git-completion.bash
 
 ## Object oriented
 source ~/.zsh/oo/oo.zsh
+alias par=parallel
