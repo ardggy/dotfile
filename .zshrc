@@ -8,9 +8,6 @@ PATH=/usr/local/bin:$PATH
 
 export TERM=xterm
 export NODE_PATH=/usr/local/lib/node_modules
-export EDITOR='emacsclient -nct'
-export VISUAL='emacsclient -nct'
-export GIT_PAGER='emacsclient -nct'
 
 # byobu - tmux wrapper
 export BYOBU_BACKEND=tmux
@@ -55,7 +52,12 @@ alias arc="(cd $HOME/opt/arc && /opt/local/bin/mzscheme -f as.scm)"
 alias perl="perl -w"         # warning option (also gcc)
 alias gcc="gcc -Wall -O0"	# and optimize (Level zero)
 
-alias emacs="emacsclient -nct"
+alias emacs="emacsclient"
+
+export EDITOR="emacs"
+export VISUAL="emacs"
+export GIT_PAGER="emacs"
+
 alias par="parallel"
 alias seq="gseq"  # for Mac OS X
 
